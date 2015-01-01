@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+source "${OPENSHIFT_OCAML_CORE_DIR}usr/src/common.sh"
+
+declare progname="${0}"
+
+function usage() {
+    echo "Usage: ${progname} [build|start|stop|restart|status|tidy|*]"
+}
+
+function run_hook() {
+    local path="${OPENSHIFT_REPO_DIR}.openshift/action_hooks/${1}"
+    if [ -f "${path}" -a -x "${path}" ]; then
+        "${path}"
+    else
+        return 0
+    fi
+}
+
+function build() {
+    "${OPENSHIFT_OCAML_CORE_DIR}bin/build-compiler"
+}
+
+for hookname in start stop status; do
+    eval "function ${hookname}() { run_hook  \"\${FUNCNAME}\"; }"
+done
+
+function restart() {
+    stop
+    start
+}
+
+function tidy() {
+    client_message "Deleting OCaml log"
+    rm -rf "${logfile}"
+    run_hook "${FUNCNAME}"
+}
+
+function ignore_hook() {
+    echo "Skipping unused hook ${1}"
+}
+
+if [ $# -ne 1 ]; then
+    usage >&2
+    exit 1
+fi
+
+# Handle commands.
+case "${1}" in
+    build|start|stop|restart|status|tidy)
+        "${1}";;
+    *) ignore_hook "${1}";;
+esac

@@ -1,0 +1,35 @@
+Name: ocaml_core
+Cartridge-Short-Name: OCAML_CORE
+Cartridge-Version: "0.0.1"
+Cartridge-Vendor: mkollar
+Version: "4.01.0"
+Versions:
+  - "3.11.2"
+  - "3.12.1"
+  - "4.00.0"
+  - "4.00.1"
+  - "4.01.0"
+  - "4.02.0"
+  - "4.02.1"
+License: "OCaml's License"
+License-Url: http://caml.inria.fr/ocaml/license.en.html
+Categories:
+  - web_framework
+  - service
+  - ocaml
+Provides:
+  - "ocaml - 4.01.0"
+  - "ocaml"
+Scaling:
+  Min: 1
+  Max: -1
+Source-Url: https://github.com/xkollar/ocaml-core-openshift/archive/master.zip
+Endpoints:
+  - Private-IP-Name:   ADDRESS
+    Private-Port-Name: PORT
+    Private-Port:      8080
+    Public-Port-Name:  PROXY_PORT
+    Mappings:
+      - Frontend:      ""
+        Backend:       ""
+        Options:       {websocket: true}

@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+source "${OPENSHIFT_OCAML_CORE_DIR}usr/src/common.sh"
+
+declare url="https://raw.github.com/ocaml/opam/master/shell/opam_installer.sh"
+declare version="${OCAMLVERSION}"
+declare progname=$( basename "${0}" )
+
+declare -a to_delete
+
+function on_exit() {
+    local name
+    if [ ${#to_delete[@]} -eq 0 ]; then
+        return
+    fi
+    for name in "${to_delete[@]}"; do
+        rm -rf "${name}"
+    done
+}
+
+function rm_on_exit() {
+    local name="${1}"
+    to_delete+=( "${name}" )
+}
+
+function main() {
+    trap on_exit EXIT
+
+    if ! type -a opam &>/dev/null ; then
+        local tmp=$( mktemp -d )
+        rm_on_exit "${tmp}"
+
+        local installer="${tmp}/$( basename "${url}" )"
+        local bindir="${OPENSHIFT_OCAML_CORE_DIR}usr/build/bin"
+
+        mkdir -p "${bindir}"
+
+        wget -O "${installer}" "${url}" |& tee -a "${logfile}" \
+        && yes n | sh "${installer}" "${bindir}" ${version} |& tee -a "${logfile}" \
+        && client_result "Opam & OCaml ${version} compiler ready." \
+        || client_result 'Error during installation'
+    fi
+
+    if ! [ -d "${OPAMROOT}/${version}" ]; then
+        client_result "Switching to OCaml ${version}"
+        eval $( opam config env )
+        opam switch "${version}" |& tee -a "${logfile}"
+        client_result "OCaml ${version} compiler ready."
+    fi
+}
+
+main "$@"

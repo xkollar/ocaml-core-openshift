@@ -1,0 +1,6 @@
+locked_files:
+  # - bin/
+  # - env/
+  # - ~/.foorc
+processed_templates:
+  - '**/*.erb'
