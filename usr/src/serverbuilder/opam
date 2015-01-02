@@ -1,0 +1,15 @@
+opam-version: "1.2"
+name: "serverbuilder"
+version: "0.0.1"
+maintainer: "Matej Kollar <mkollar@208115@mail.muni.cz>"
+authors: "Matej Kollar <mkollar@208115@mail.muni.cz>"
+homepage: "https://github.com/xkollar/ocaml-core-openshift"
+bug-reports: "https://github.com/xkollar/ocaml-core-openshift/issues"
+license: "GNU AFFERO GENERAL PUBLIC LICENSE"
+build: [
+  ["./configure" "--prefix=%{prefix}%"]
+  [make]
+]
+install: [make "install"]
+remove: ["ocamlfind" "remove" "server"]
+depends: "ocamlfind" {build}
