@@ -17,10 +17,6 @@ function run_hook() {
     fi
 }
 
-function build() {
-    "${OPENSHIFT_OCAML_CORE_DIR}bin/build-compiler"
-}
-
 for hookname in start stop status; do
     eval "function ${hookname}() { run_hook  \"\${FUNCNAME}\"; }"
 done
@@ -34,6 +30,22 @@ function tidy() {
     client_message "Deleting OCaml log"
     rm -rf "${logfile}"
     run_hook "${FUNCNAME}"
+}
+
+function build() {
+    "${OPENSHIFT_OCAML_CORE_DIR}bin/build-compiler"
+    ( cd "${OPENSHIFT_REPO_DIR}"
+        eval $( opam config env )
+        if [ -f _oasis ]; then
+            oasis setup
+        fi
+        declare pkgname=$( sed -n 's/name:\s*"\?\([^"]*\)"\?/\1/p' opam | head -1 )
+        if [ -d "${OPAMROOT}/${OCAMLVERSION}/packages.dev/${pkgname}" ]; then
+            opam upgrade "${pkgname}" -y |& tee -a "${logfile}"
+        else
+            opam pin add "${pkgname}" . -y |& tee -a "${logfile}"
+        fi
+    )
 }
 
 function ignore_hook() {
