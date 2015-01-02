@@ -1,0 +1,17 @@
+OASISFormat: 0.4
+Name:        Example Server
+Version:     0.0.1
+Synopsis:    Simple starter application in OCaml
+Authors:     You
+License:     GPL-3
+Plugins:     META (0.4), DevFiles (0.4)
+
+Executable server
+  Path:       .
+  BuildTools: ocamlbuild
+  MainIs:     server.ml
+  ByteOpt: -thread
+  NativeOpt: -thread
+  BuildDepends: async, core
+  # Can be: native, byte, best
+  CompiledObject: native

@@ -1,0 +1,15 @@
+opam-version: "1.2"
+name: "server"
+version: "0.0.1"
+maintainer: "You <you@example.com>"
+authors: "You <you@example.com>"
+homepage: "https://example.com/"
+bug-reports: "https://example.com/issues"
+license: "GNU AFFERO GENERAL PUBLIC LICENSE"
+build: [
+  ["./configure" "--prefix=%{prefix}%"]
+  [make]
+]
+install: [make "install"]
+remove: ["ocamlfind" "remove" "server"]
+depends: "ocamlfind" {build} & "core" & "async"
