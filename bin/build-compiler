@@ -23,10 +23,15 @@ function rm_on_exit() {
     to_delete+=( "${name}" )
 }
 
+function is_command() {
+    local cmd="${1}"
+    type -a "${cmd}" &>/dev/null
+}
+
 function main() {
     trap on_exit EXIT
 
-    if ! type -a opam &>/dev/null ; then
+    if ! is_command opam; then
         local tmp=$( mktemp -d )
         rm_on_exit "${tmp}"
 
@@ -46,6 +51,12 @@ function main() {
         eval $( opam config env )
         opam switch "${version}" |& tee -a "${logfile}"
         client_result "OCaml ${version} compiler ready."
+    fi
+
+    if ! [ -d "${OPAMROOT}/packages/oasis" ]; then
+        eval $( opam config env )
+        opam install -y oasis |& tee -a "${logfile}"
+        client_result "OASIS (build tool) installed."
     fi
 }
 
