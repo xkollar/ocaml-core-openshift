@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+source "${OPENSHIFT_OCAML_CORE_DIR}usr/src/common.sh"
+
+function main() {
+    install_local_package "${OPENSHIFT_REPO_DIR}"
+}
+
+main
