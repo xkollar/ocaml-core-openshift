@@ -3,9 +3,16 @@
 source "${OPENSHIFT_OCAML_CORE_DIR}usr/src/common.sh"
 
 declare progname="${0}"
+declare pidfile="${OPENSHIFT_DATA_DIR}server.pid"
 
 function usage() {
     echo "Usage: ${progname} [build|start|stop|restart|status|tidy|*]"
+}
+
+function pid() {
+    local pid=$( cat "${pidfile}" )
+    echo "${pid}"
+    test -n "${pid}" && kill -0 "${pid}" &>/dev/null
 }
 
 function run_hook() {
@@ -17,9 +24,35 @@ function run_hook() {
     fi
 }
 
-for hookname in start stop status; do
-    eval "function ${hookname}() { run_hook  \"\${FUNCNAME}\"; }"
-done
+# for hookname in start stop status; do
+#     eval "function ${hookname}() { run_hook  \"\${FUNCNAME}\"; }"
+# done
+
+function start() {
+    if pid &>/dev/null; then
+        warning "The server is already running."
+    else
+        eval $( opam config env )
+        nohup build_and_run_server &>${logfile} &
+        echo "$!" > "${pidfile}"
+    fi
+}
+
+function stop {
+    if pid=$( pid ); then
+        kill "${pid}"
+        wait_for_stop "${pid}"
+        if pid &>/dev/null; then
+            error "The server did not respond to the stop signal." 1
+        fi
+    else
+        warning "The server is not running, nothing to stop."
+    fi
+}
+
+function status() {
+    pid
+}
 
 function restart() {
     stop
