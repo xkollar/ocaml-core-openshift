@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+declare infile="${OPENSHIFT_REPO_DIR}server.conf"
+declare outfile="${OPENSHIFT_DATA_DIR}server.conf"
+
+if [ -f $outfile ]; then
+    exit 0
+fi
+
+if [ -f "${infile}" ]; then
+    ln "${infile}" "${outfile}"
+    exit 0
+fi
+
+if [ -f "${infile}.erb" ]; then
+    erb "${infile}" > "${outfile}"
+    exit 0
+fi

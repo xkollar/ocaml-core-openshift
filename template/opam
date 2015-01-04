@@ -12,4 +12,4 @@ build: [
 ]
 install: [make "install"]
 remove: ["ocamlfind" "remove" "server"]
-depends: "ocamlfind" {build} & "core" & "async"
+depends: "ocamlfind" {build} & "ocamlnet"
