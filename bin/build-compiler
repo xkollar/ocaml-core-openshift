@@ -58,8 +58,6 @@ function main() {
         opam install -y oasis |& tee -a "${logfile}"
         client_result "OASIS (build tool) installed."
     fi
-
-    install_local_package "${OPENSHIFT_OCAML_CORE_DIR}usr/src/serverbuilder"
 }
 
 main "$@"

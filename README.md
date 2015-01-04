@@ -41,10 +41,11 @@ git push
 When you push for the first time, OPAM will be downloaded and
 installed and then OCaml compiler and couple of auxiliary
 packages will be downloaded and/or built (it was timing out if
-this was done during initial gear setup). Compilation of packages
-may take longer, therefore it is done on server start. In particular
-[serverbuilder](https://github.com/xkollar/ocaml-core-openshift/blob/master/usr/src/serverbuilder/build_and_run_server.ml)
-is run. Its functionality can be vaguely described as follows:
+this was done during initial gear setup).
+
+Next step is installation of your application (it should be OASIS and
+OPAM enabled) followed by execution of binary `server`. That can be
+vaguely described as follows:
 
 ~~~~ .bash
 # in application repo dir
@@ -53,16 +54,8 @@ opam pind add "${pkgname}" . -y
 server -port "${OPENSHIFT_OCAML_CORE_PORT}" -address "${PENSHIFT_OCAML_CORE_ADDRESS}"
 ~~~~
 
-This delayed building is probably wrong. It was done in attempt to work
-around issues connected to building Core (`core_kernel` in particular).
-It did not help. It might (and probably will) get removed.
-
 ### What needs to be done for your application
 
 Your application must have at least executable called `server` that
-takes two options `-port` and `-address` and use those as parameters
-for binding.
-
-Alternatively your application can get that information from environment
-variables `OPENSHIFT_OCAML_CORE_PORT` and `OPENSHIFT_OCAML_CORE_ADDRESS`
-respectively.
+takes uses values of environment variables `OPENSHIFT_OCAML_CORE_PORT`
+and `OPENSHIFT_OCAML_CORE_ADDRESS` as parameters for binding.

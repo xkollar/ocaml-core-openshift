@@ -33,7 +33,7 @@ function start() {
         warning "The server is already running."
     else
         eval $( opam config env )
-        nohup build_and_run_server &>${logfile} &
+        nohup server &>${logfile} &
         echo "$!" > "${pidfile}"
     fi
 }
@@ -67,7 +67,7 @@ function tidy() {
 
 function build() {
     "${OPENSHIFT_OCAML_CORE_DIR}bin/build-compiler"
-    client_message "Building may take very long, so it has been moved to start hook."
+    "${OPENSHIFT_OCAML_CORE_DIR}bin/build-server"
 }
 
 function ignore_hook() {
