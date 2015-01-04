@@ -66,8 +66,8 @@ function tidy() {
 }
 
 function build() {
-    "${OPENSHIFT_OCAML_CORE_DIR}bin/build-compiler"
-    "${OPENSHIFT_OCAML_CORE_DIR}bin/build-server"
+    "${OPENSHIFT_OCAML_CORE_DIR}bin/build-compiler" |& timestamp
+    "${OPENSHIFT_OCAML_CORE_DIR}bin/build-server" |& timestamp
 }
 
 function ignore_hook() {

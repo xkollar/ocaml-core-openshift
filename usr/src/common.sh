@@ -6,6 +6,18 @@ set -eu
 
 declare logfile=$( readlink -f "${OPENSHIFT_LOG_DIR}/ocaml_core.log" )
 
+function timestamp() {
+    local timelimit=${1:-30}
+    while true; do
+        read -t "${timelimit}"
+        local ret=$?
+        timestamp="$( date +%FT%T )"
+        test "${ret}" -eq 0 && echo -e "[${timestamp}] $REPLY" \
+        || ( test "${ret}" -gt 128 && echo "<${timestamp}> *mark*" ) \
+        || break
+    done || true
+}
+
 function install_local_package() {
     local dir="${1}"
     ( cd "${dir}"
