@@ -14,10 +14,13 @@ function install_local_package() {
             oasis setup
         fi
         declare pkgname=$( sed -n 's/name:\s*"\?\([^"]*\)"\?/\1/p' opam | head -1 )
-        if [ -d "${OPAMROOT}/${OCAMLVERSION}/packages.dev/${pkgname}" ]; then
+        if ! [ -d "${OPAMROOT}/${OCAMLVERSION}/packages.dev/${pkgname}" ]; then
+            opam pin add "${pkgname}" . -y |& tee -a "${logfile}"
+        fi
+        if opam list -i server &>/dev/null; then
             opam upgrade "${pkgname}" -y |& tee -a "${logfile}"
         else
-            opam pin add "${pkgname}" . -y |& tee -a "${logfile}"
+            opam install "${pkgname}" -y |& tee -a "${logfile}"
         fi
     )
 }
