@@ -1,4 +1,4 @@
-OCaml-Core-OpenShift
+OCaml-<del>Core-</del>OpenShift
 ====================
 
 OpenShift cartridge for OCaml with integrated building and running server.
