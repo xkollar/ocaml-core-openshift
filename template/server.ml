@@ -38,16 +38,18 @@ let service_factory = Nethttpd_plex.nethttpd_factory
     ~handlers:[ "fact_service", fact_handler ]
 
 let main () =
-  (* Create a parser for the standard Netplex command-line arguments: *)
-  let (opt_list, cmdline_cfg) = Netplex_main.args () in
-
-  let cfg =
-    let dir = Unix.getenv "OPENSHIFT_DATA_DIR" in
-    Netplex_main.modify
+  (* Decault config, to be overwritten by command-line arguments *)
+  let defaults = let dir = Unix.getenv "OPENSHIFT_DATA_DIR" in
+    Netplex_main.create
       ~config_filename:(dir ^ "server.conf")
       ~pidfile:(Some (dir ^ "server.pid"))
-      cmdline_cfg
+      ()
   in
+
+  (* Create a parser for the standard Netplex command-line arguments: *)
+  let (opt_list, cmdline_cfg) = Netplex_main.args ~defaults () in
+
+  let cfg = cmdline_cfg in
 
   (* Parse the command-line arguments: *)
   Arg.parse
