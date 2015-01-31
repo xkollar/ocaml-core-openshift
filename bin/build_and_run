@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+source "${OPENSHIFT_OCAML_CORE_DIR}usr/src/common.sh"
+
+function main() {
+    "${OPENSHIFT_OCAML_CORE_DIR}bin/build-compiler" |& timestamp
+    "${OPENSHIFT_OCAML_CORE_DIR}bin/build-server" |& timestamp
+    eval $( opam config env )
+    exec server
+}
+
+main

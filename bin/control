@@ -32,8 +32,7 @@ function start() {
     if pid &>/dev/null; then
         warning "The server is already running."
     else
-        eval $( opam config env )
-        nohup server &>${logfile} &
+        nohup "${OPENSHIFT_OCAML_CORE_DIR}bin/build_and_run" &>${logfile} &
         echo "$!" > "${pidfile}"
     fi
 }
@@ -65,11 +64,6 @@ function tidy() {
     run_hook "${FUNCNAME}"
 }
 
-function build() {
-    "${OPENSHIFT_OCAML_CORE_DIR}bin/build-compiler" |& timestamp
-    "${OPENSHIFT_OCAML_CORE_DIR}bin/build-server" |& timestamp
-}
-
 function ignore_hook() {
     echo "Skipping unused hook ${1}"
 }
@@ -81,7 +75,7 @@ fi
 
 # Handle commands.
 case "${1}" in
-    build|start|stop|restart|status|tidy)
+    start|stop|restart|status|tidy)
         "${1}";;
     *) ignore_hook "${1}";;
 esac
