@@ -36,7 +36,17 @@ netplex {
           }
         };
         uri {
-          path = "/hook";
+          path = "/hooklog/";
+          service {
+            type = "file";
+            docroot = "<%= ENV['OPENSHIFT_DATA_DIR'] %>";
+            media_types_file = "/etc/mime.types";
+            enable_listings = false;
+            index_files = "index.html";
+          }
+        };
+        uri {
+          path = "/webhook";
           method {
             allow = "POST";
             service {

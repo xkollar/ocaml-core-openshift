@@ -44,7 +44,7 @@ module Webhook = struct
   let process_json_request jreq =
     let dir =  Unix.getenv "OPENSHIFT_DATA_DIR" in
 
-    let oc = open_out_gen [Open_append; Open_creat] 0o600 (dir ^ "hooklog") in
+    let oc = open_out_gen [Open_append; Open_creat] 0o600 (dir ^ "webhook.log") in
 
     let open Yojson.Basic.Util in
 
