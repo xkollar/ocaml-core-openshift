@@ -32,8 +32,8 @@ rhc app create ocamltest --repo "${repodir}" "https://raw.githubusercontent.com/
 cd "${repodir}"
 ~~~~
 
-At this point, only environment configuration is done. If you ssh to
-your gear, you will not find any OCaml stuff there.
+At this point only environment configuration is done. If you ssh to
+your gear you will not find any OCaml stuff there.
 
 ~~~~ .bash
 # do your changes and commit them into git
@@ -42,8 +42,10 @@ git push
 
 When you push for the first time, OPAM will be downloaded and
 installed and then OCaml compiler and couple of auxiliary
-packages will be downloaded and/or built (it was timing out if
-this was done during initial gear setup).
+packages will be downloaded and/or built. (One might think
+that this should have been done during the application creation.
+However, compiler installation is rather lengthy process and it would
+have led to time-out thus causing inconsistent state.)
 
 Next step is installation of your application (it should be OASIS and
 OPAM enabled) followed by execution of binary `server`. That can be
@@ -52,12 +54,12 @@ vaguely described as follows:
 ~~~~ .bash
 # in application repo dir
 oasis setup
-opam pind add "${pkgname}" . -y
+opam pin add "${pkgname}" . -y
 server -port "${OPENSHIFT_OCAML_CORE_PORT}" -address "${PENSHIFT_OCAML_CORE_ADDRESS}"
 ~~~~
 
 ### What needs to be done for your application
 
-Your application must have at least executable called `server` that
-takes uses values of environment variables `OPENSHIFT_OCAML_CORE_PORT`
+Your application must provide binary called `server` that
+uses values of environment variables `OPENSHIFT_OCAML_CORE_PORT`
 and `OPENSHIFT_OCAML_CORE_ADDRESS` as parameters for binding.
