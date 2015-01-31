@@ -12,6 +12,6 @@ Executable server
   MainIs:     server.ml
   ByteOpt: -thread
   NativeOpt: -thread
-  BuildDepends: nethttpd
+  BuildDepends: nethttpd, yojson
   # Can be: native, byte, best
   CompiledObject: native

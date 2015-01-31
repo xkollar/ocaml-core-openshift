@@ -36,6 +36,16 @@ netplex {
           }
         };
         uri {
+          path = "/hook";
+          method {
+            allow = "POST";
+            service {
+              type = "dynamic";
+              handler = "hook_service";
+            };
+          };
+        };
+        uri {
           path = "/dynamic";
           method {
             allow = "GET";
