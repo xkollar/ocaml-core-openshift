@@ -3,19 +3,21 @@ OCaml-<del>Core-</del>OpenShift
 
 OpenShift cartridge for OCaml with integrated building and running server.
 
-This is simple cartridge for creating applications based on OCaml <del>with Core</del>
+This is a simple cartridge for creating applications based on OCaml <del>with Core</del>
 (well, unless you have larger gear at your disposal).
-There already exists other [OCaml cartridge](https://bitbucket.org/jpathy/ocaml-openshift),
-you may want to check it out too. Originally I thought my cartridge would be different,
-however during the development I gradually found out that those people did quite good
-job and converged to very similar design myself. At least I have learned something.
 
-I added building and installation of packages using `OASIS` and `OPAM`. This was loosely
-inspired by [Haskell-Cloud](https://github.com/accursoft/Haskell-Cloud).
+There is also another [OCaml cartridge](https://bitbucket.org/jpathy/ocaml-openshift),
+you may want to check it out too. Originally I thought my cartridge would be different.
+However, during the development I gradually found out that they had done quite good
+job and I have converged to very similar design myself. (At least I have learned something.)
+
+Comparing to the other one my cartridge implements also
+building, installation, and startup of packages (using `OASIS` and `OPAM`).
+This was loosely inspired by [Haskell-Cloud](https://github.com/accursoft/Haskell-Cloud).
 
 Original idea was to create environment where it would be simple/possible
-to build servers based on Core+Async. However, it turned out to be quite
-hard to build Core in limited conditions that OpenShift provides.
+to build applications based on `Core`+`Async`. However, it turned out to be quite
+hard to build `Core` under restrictions imposed by small gears of OpenShift.
 
 To start with OCaml and Core read [Real Wold OCaml](https://realworldocaml.org/).
 
