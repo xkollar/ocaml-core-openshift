@@ -48,8 +48,10 @@ module Webhook = struct
 
     let open Yojson.Basic.Util in
 
+    (*
     jreq |> member "action" |> to_string
     |> Printf.fprintf oc "%s\n";
+    *)
     jreq |> Yojson.Basic.to_string
     |> Printf.fprintf oc "%s\n";
     close_out oc
